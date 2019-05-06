@@ -16,26 +16,28 @@ public class Goes {
     public HashMap<String, Integer> player1_scoreMap = new HashMap<String, Integer>();
     public HashMap<String, Integer> player2_scoreMap = new HashMap<String, Integer>();
 
+    Scanner go = new Scanner(System.in);
 
     public Goes(Player player1, Player player2) {
-        System.out.println("You have to use each category once.\n ");
+        System.out.println("YOU HAVE TO USE EACH CATEGORY ONCE.\n ");
         // assumption - two players
         ScoringCategories categories = new ScoringCategories();
-        Scanner go = new Scanner(System.in);
-        player1_scoreMap = setPlayer_scoreMap(player1_scoreMap);
         player2_scoreMap = setPlayer_scoreMap(player2_scoreMap);
+        player1_scoreMap = setPlayer_scoreMap(player1_scoreMap);
 
+        System.out.println(player2_scoreMap);
         while ((player1.chances > 0) || (player2.chances > 0)) {
             player1.chances--;
             player2.chances--;
             player1_dices = rolling(player1_dices);
             player2_dices = rolling(player2_dices);
+
             System.out.println("\nThis go for " + player1.name + ":     " + Arrays.toString(player1_dices));
             System.out.println("Select a scoring rule for " + player1.name +
                     ":\nchance, yatzy, ones, twos, threes, fours, fives, sixes, pair, twoPairs," +
                     "threeOfAKind, fourOfAKind, smallStraight, largeStraight, fullHouse");
             player1_category = go.nextLine();
-
+            player1_category = validCategory(player1_category, player1_scoreMap);
             player1_scores = categories.getScores(player1_category, player1_dices);
             System.out.println("The chosen rule for "+player1.name + " is: " + player1_category + "\t\tScore: " + player1_scores);
             player1_scoreMap.replace(player1_category, player1_scores);
@@ -45,11 +47,24 @@ public class Goes {
                     ":\nchance, yatzy, ones, twos, threes, fours, fives, sixes, pair, twoPairs," +
                     "threeOfAKind, fourOfAKind, smallStraight, largeStraight, fullHouse");
             player2_category = go.nextLine();
+            player2_category = validCategory(player2_category, player2_scoreMap);
             player2_scores = categories.getScores(player2_category, player2_dices);
             System.out.println("The chosen rule for " + player2.name + " is: " + player2_category + "\t\tScore: " + player2_scores);
             player2_scoreMap.replace(player2_category, player2_scores);
         }
-    System.out.println(player1_scoreMap);
+        System.out.println(player1_scoreMap);
+        System.out.println(player2_scoreMap);
+        //TODO - Pick the final winner
+    }
+
+    private String validCategory(String player_category, HashMap<String, Integer> player_scoreMap){
+        while (player_scoreMap.get(player_category) != null){
+            System.out.println("'" + player_category + "' has been chosen. Please select unused one among them" +
+                    ":\nchance, yatzy, ones, twos, threes, fours, fives, sixes, pair, twoPairs," +
+                    "threeOfAKind, fourOfAKind, smallStraight, largeStraight, fullHouse");
+            player_category = go.nextLine();
+        }
+        return player_category;
     }
 
     private int[] rolling(int[] dices) {
