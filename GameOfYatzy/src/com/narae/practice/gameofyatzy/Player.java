@@ -7,7 +7,7 @@ public class Player {
     public int chances;
     public String name;
     private int reroll_chances;
-    private int ONE_ROUND = 15;
+    private int ONE_ROUND =3;// = 15;
     private int REROLL_CHANCES = 3;
 
     Random random = new Random();
