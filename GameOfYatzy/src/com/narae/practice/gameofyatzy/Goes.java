@@ -54,6 +54,22 @@ public class Goes {
         System.out.println(player1.name + ":\t" + player1_scoreMap);
         System.out.println(player2.name + ":\t" + player2_scoreMap);
         //TODO - Pick the final winner
+        whosWinner(player1, player1_scoreMap, player2,  player2_scoreMap);
+    }
+    private void whosWinner(Player player1, HashMap<String, Integer> player1_scoreMap, Player player2, HashMap<String, Integer> player2_scoreMap){
+        int finalScore_player1 = 0;
+        int finalScroe_player2 = 0;
+        for (int score_1: player1_scoreMap.values()){
+            finalScore_player1 += score_1;
+        }
+        for (int score_2: player2_scoreMap.values()){
+            finalScroe_player2 += score_2;
+        }
+        System.out.println(player1.name + " gets the final score " + finalScore_player1);
+        System.out.println(player2.name + " gets the final score " + finalScroe_player2);
+        Player winner = finalScore_player1 > finalScroe_player2 ? player1 : player2;
+        int winner_score = finalScore_player1 > finalScroe_player2 ? finalScore_player1: finalScroe_player2;
+        System.out.println("Winner is " + winner.name + " with the final score " + winner_score);
     }
 
     private String validCategory(String player_category, HashMap<String, Integer> player_scoreMap){
