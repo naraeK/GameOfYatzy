@@ -22,10 +22,9 @@ public class Goes {
         System.out.println("YOU HAVE TO USE EACH CATEGORY ONCE.\n ");
         // assumption - two players
         ScoringCategories categories = new ScoringCategories();
-        player2_scoreMap = setPlayer_scoreMap(player2_scoreMap);
         player1_scoreMap = setPlayer_scoreMap(player1_scoreMap);
+        player2_scoreMap = setPlayer_scoreMap(player2_scoreMap);
 
-        System.out.println(player2_scoreMap);
         while ((player1.chances > 0) || (player2.chances > 0)) {
             player1.chances--;
             player2.chances--;
@@ -52,8 +51,8 @@ public class Goes {
             System.out.println("The chosen rule for " + player2.name + " is: " + player2_category + "\t\tScore: " + player2_scores);
             player2_scoreMap.replace(player2_category, player2_scores);
         }
-        System.out.println(player1_scoreMap);
-        System.out.println(player2_scoreMap);
+        System.out.println(player1.name + ":\t" + player1_scoreMap);
+        System.out.println(player2.name + ":\t" + player2_scoreMap);
         //TODO - Pick the final winner
     }
 
@@ -77,6 +76,26 @@ public class Goes {
     }
 
     private HashMap<String, Integer> setPlayer_scoreMap(HashMap<String, Integer> player_scoreMap) {
+        player_scoreMap.put("chance", null);
+        player_scoreMap.put("yatzy", null);
+        player_scoreMap.put("ones", null);
+        player_scoreMap.put("twos", null);
+        player_scoreMap.put("threes", null);
+        player_scoreMap.put("fours", null);
+        player_scoreMap.put("fives", null);
+        player_scoreMap.put("sixes", null);
+        player_scoreMap.put("pair", null);
+        player_scoreMap.put("twoPairs", null);
+        player_scoreMap.put("threeOfAKind", null);
+        player_scoreMap.put("fourOfAKind", null);
+        player_scoreMap.put("smallStraight", null);
+        player_scoreMap.put("largeStraight", null);
+        player_scoreMap.put("fullHouse", null);
+        return player_scoreMap;
+    }
+
+
+    private HashMap<String, Integer> setPlayer_scoreMap2(HashMap<String, Integer> player_scoreMap) {
         player1_scoreMap.put("chance", null);
         player1_scoreMap.put("yatzy", null);
         player1_scoreMap.put("ones", null);
@@ -94,7 +113,6 @@ public class Goes {
         player1_scoreMap.put("fullHouse", null);
         return player_scoreMap;
     }
-
     public HashMap<String, Integer> getPlayer1_scoreMap() {
         return player1_scoreMap;
     }
