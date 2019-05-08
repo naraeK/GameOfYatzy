@@ -1,9 +1,6 @@
 package com.narae.practice.gameofyatzy;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Goes {
     private Random random = new Random();
@@ -15,7 +12,10 @@ public class Goes {
     private int player2_scores;
     public HashMap<String, Integer> player1_scoreMap = new HashMap<String, Integer>();
     public HashMap<String, Integer> player2_scoreMap = new HashMap<String, Integer>();
-
+/*
+    public HashSet<String> categories = new HashSet<String>();
+    categories.addAll(Arrays.asList(new String[]{"chance", "yatzy", "ones", "twos", "threes", "fours", "fives", "sixes", "pair", "twoPairs",
+                      "threeOfAKind", "fourOfAKind", "smallStraight", "largeStraight", "fullHouse"}));*/
     Scanner go = new Scanner(System.in);
 
     public Goes(Player player1, Player player2) {
@@ -36,6 +36,7 @@ public class Goes {
                     ":\nchance, yatzy, ones, twos, threes, fours, fives, sixes, pair, twoPairs," +
                     "threeOfAKind, fourOfAKind, smallStraight, largeStraight, fullHouse");
             player1_category = go.nextLine();
+            player1_category = validName(player1_category);
             player1_category = validCategory(player1_category, player1_scoreMap);
             player1_scores = categories.getScores(player1_category, player1_dices);
             System.out.println("The chosen rule for "+player1.name + " is: " + player1_category + "\t\tScore: " + player1_scores);
@@ -46,6 +47,7 @@ public class Goes {
                     ":\nchance, yatzy, ones, twos, threes, fours, fives, sixes, pair, twoPairs," +
                     "threeOfAKind, fourOfAKind, smallStraight, largeStraight, fullHouse");
             player2_category = go.nextLine();
+            player2_category = validName(player2_category);
             player2_category = validCategory(player2_category, player2_scoreMap);
             player2_scores = categories.getScores(player2_category, player2_dices);
             System.out.println("The chosen rule for " + player2.name + " is: " + player2_category + "\t\tScore: " + player2_scores);
@@ -53,7 +55,7 @@ public class Goes {
         }
         System.out.println(player1.name + ":\t" + player1_scoreMap);
         System.out.println(player2.name + ":\t" + player2_scoreMap);
-        //TODO - Pick the final winner
+
         whosWinner(player1, player1_scoreMap, player2,  player2_scoreMap);
     }
     private void whosWinner(Player player1, HashMap<String, Integer> player1_scoreMap, Player player2, HashMap<String, Integer> player2_scoreMap){
@@ -73,9 +75,26 @@ public class Goes {
     }
 
     private String validCategory(String player_category, HashMap<String, Integer> player_scoreMap){
-        while (player_scoreMap.get(player_category) != null){
+        HashSet<String> categories = new HashSet<String>();
+        categories.addAll(Arrays.asList(new String[]{"chance", "yatzy", "ones", "twos", "threes", "fours", "fives", "sixes", "pair", "twoPairs",
+                "threeOfAKind", "fourOfAKind", "smallStraight", "largeStraight", "fullHouse"}));
+        while ((player_scoreMap.get(player_category) != null) || (!categories.contains(player_category))){
             System.out.println("'" + player_category + "' has been chosen. Please select unused one among them" +
-                    ":\nchance, yatzy, ones, twos, threes, fours, fives, sixes, pair, twoPairs," +
+                    ":\nchance, yatzy, ones, twos, threes, fours, fives, sixes, pair, twoPairs, " +
+                    "threeOfAKind, fourOfAKind, smallStraight, largeStraight, fullHouse");
+            player_category = go.nextLine();
+            if ( !categories.contains(player_category)) {player_category = validName(player_category);}
+        }
+        return player_category;
+    }
+
+
+    public String validName(String player_category) {
+        HashSet<String> categories = new HashSet<String>();
+        categories.addAll(Arrays.asList(new String[]{"chance", "yatzy", "ones", "twos", "threes", "fours", "fives", "sixes", "pair", "twoPairs",
+                "threeOfAKind", "fourOfAKind", "smallStraight", "largeStraight", "fullHouse"}));
+        while (!categories.contains(player_category)) {
+            System.out.println("Invalid name. Pleace pick one among: \nchance, yatzy, ones, twos, threes, fours, fives, sixes, pair, twoPairs, " +
                     "threeOfAKind, fourOfAKind, smallStraight, largeStraight, fullHouse");
             player_category = go.nextLine();
         }
@@ -109,7 +128,6 @@ public class Goes {
         player_scoreMap.put("fullHouse", null);
         return player_scoreMap;
     }
-
 
     private HashMap<String, Integer> setPlayer_scoreMap2(HashMap<String, Integer> player_scoreMap) {
         player1_scoreMap.put("chance", null);

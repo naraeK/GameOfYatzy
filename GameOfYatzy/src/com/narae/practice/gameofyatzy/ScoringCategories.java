@@ -60,15 +60,9 @@ public class ScoringCategories {
     }
 
     private int pair(int[] dices) {
-        int one = 0, two = 0, three = 0, four = 0, five = 0, six = 0;
-        for (int dice : dices) {
-            one = dice == 1 ? one += dice : one;
-            two = dice == 2 ? two += dice : two;
-            three = dice == 3 ? three += dice : three;
-            four = dice == 4 ? four += dice : four;
-            five = dice == 5 ? five += dice : five;
-            six = dice == 6 ? six += dice : six;
-        }
+        List<Integer> elementsSum = diceElementsSum (dices);
+        int one = elementsSum.get(0), two = elementsSum.get(1), three = elementsSum.get(2), four = elementsSum.get(3), five = elementsSum.get(4), six = elementsSum.get(5);
+
         int pair_score = 0;
         if (six > 6) {
             pair_score = 12;
@@ -87,15 +81,9 @@ public class ScoringCategories {
     }
 
     private int twoPairs(int[] dices) {
-        int one = 0, two = 0, three = 0, four = 0, five = 0, six = 0;
-        for (int dice : dices) {
-            one = dice == 1 ? one += dice : one;
-            two = dice == 2 ? two += dice : two;
-            three = dice == 3 ? three += dice : three;
-            four = dice == 4 ? four += dice : four;
-            five = dice == 5 ? five += dice : five;
-            six = dice == 6 ? six += dice : six;
-        }
+        List<Integer> elementsSum = diceElementsSum (dices);
+        int one = elementsSum.get(0), two = elementsSum.get(1), three = elementsSum.get(2), four = elementsSum.get(3), five = elementsSum.get(4), six = elementsSum.get(5);
+
         int isPair = 0;
         int twoPairs_score = 0;
         if (six > 6) {
@@ -126,15 +114,9 @@ public class ScoringCategories {
     }
 
     private int threeOfAKind(int[] dices) {
-        int one = 0, two = 0, three = 0, four = 0, five = 0, six = 0;
-        for (int dice : dices) {
-            one = dice == 1 ? one += dice : one;
-            two = dice == 2 ? two += dice : two;
-            three = dice == 3 ? three += dice : three;
-            four = dice == 4 ? four += dice : four;
-            five = dice == 5 ? five += dice : five;
-            six = dice == 6 ? six += dice : six;
-        }
+        List<Integer> elementsSum = diceElementsSum (dices);
+        int one = elementsSum.get(0), two = elementsSum.get(1), three = elementsSum.get(2), four = elementsSum.get(3), five = elementsSum.get(4), six = elementsSum.get(5);
+
         int threeOfAKind_score = 0;
         if (six > 12) {
             threeOfAKind_score = 18;
@@ -153,14 +135,15 @@ public class ScoringCategories {
     }
 
     private int fourOfAKind(int[] dices) {
-        int one = 0, two = 0, three = 0, four = 0, five = 0, six = 0;
-        for (int dice : dices) {
-            one = dice == 1 ? one += dice : one;
-            two = dice == 2 ? two += dice : two;
-            three = dice == 3 ? three += dice : three;
-            four = dice == 4 ? four += dice : four;
-            five = dice == 5 ? five += dice : five;
-            six = dice == 6 ? six += dice : six;
+        List<Integer> elementsSum = diceElementsSum (dices);
+        int one = elementsSum.get(0), two = elementsSum.get(1), three = elementsSum.get(2), four = elementsSum.get(3), five = elementsSum.get(4), six = elementsSum.get(5);
+        int isFullHouse = 0;
+        int fullHouse_score = 0;
+        for (int elementSum : elementsSum) {
+            if (elementSum != 0) {
+                isFullHouse += 1;
+                fullHouse_score += elementSum;
+            }
         }
         int fourOfAKind_score = 0;
         if (six > 18) {
@@ -188,24 +171,15 @@ public class ScoringCategories {
     }
 
     private int largeStraight(int[] dices) {
-        Set<Integer> smallstraight = new HashSet<Integer>();
-        smallstraight.addAll(Arrays.asList(new Integer[]{2, 3, 4, 5, 6}));
+        Set<Integer> largestraight = new HashSet<Integer>();
+        largestraight.addAll(Arrays.asList(new Integer[]{2, 3, 4, 5, 6}));
         Integer[] dicesInt = Arrays.stream(dices).boxed().toArray(Integer[]::new);
         Set<Integer> dicesSet = new HashSet<Integer>(Arrays.asList(dicesInt));
-        return scores = (dicesSet.equals(smallstraight)) ? 20 : 0;
+        return scores = (dicesSet.equals(largestraight)) ? 20 : 0;
     }
 
     private int fullHouse(int[] dices) {
-        int one = 0, two = 0, three = 0, four = 0, five = 0, six = 0;
-        for (int dice : dices) {
-            one = dice == 1 ? one += dice : one;
-            two = dice == 2 ? two += dice : two;
-            three = dice == 3 ? three += dice : three;
-            four = dice == 4 ? four += dice : four;
-            five = dice == 5 ? five += dice : five;
-            six = dice == 6 ? six += dice : six;
-        }
-        List<Integer> elementsSum = new ArrayList<Integer>(Arrays.asList(one, two, three, four, five, six));
+        List<Integer> elementsSum = diceElementsSum (dices);
         int isFullHouse = 0;
         int fullHouse_score = 0;
         for (int elementSum : elementsSum) {
@@ -217,8 +191,8 @@ public class ScoringCategories {
         return scores = isFullHouse == 2 ? fullHouse_score : 0;
     }
 
-    /*
-    private Integer[] diceElementsSum (int[] dices){
+
+    private static List<Integer> diceElementsSum (int[] dices){
         int one = 0, two = 0, three = 0, four = 0, five = 0, six = 0;
         for (int dice: dices){
             one = dice == 1 ? one += dice : one;
@@ -229,12 +203,9 @@ public class ScoringCategories {
             six = dice == 6 ? six += dice : six;
         }
         List<Integer> elementsSum = new ArrayList<Integer>(Arrays.asList(one, two, three, four, five, six));
+        return elementsSum;
     }
 
-    public void setScores(int scores) {
-        this.scores = scores;
-    }
-*/
 
     public int getScores(String category, int[] dices) {
         switch (category) {
@@ -278,15 +249,16 @@ public class ScoringCategories {
                 scores = smallStraight(dices);
                 break;
             case "largeStraight":
-                scores = chance(dices);
+                scores = largeStraight(dices);
                 break;
             case "fullHouse":
-                scores = chance(dices);
+                scores = fullHouse(dices);
                 break;
             default:
-                System.out.println("Invaild category. Please select one.");
+                System.out.println("Invaild category. Please select valid category below.\n");
                 break;
         }
         return scores;
     }
 }
+
