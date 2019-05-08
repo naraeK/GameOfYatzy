@@ -4,8 +4,7 @@ import java.util.*;
 
 public class ScoringCategories {
     private int scores;
-    Scanner go = new Scanner(System.in);
-    String category;
+
 
     private int chance(int[] dices) {
         int sum = 0;
@@ -192,6 +191,7 @@ public class ScoringCategories {
         return scores = isFullHouse == 2 ? fullHouse_score : 0;
     }
 
+
     private static List<Integer> diceElementsSum (int[] dices){
         int one = 0, two = 0, three = 0, four = 0, five = 0, six = 0;
         for (int dice: dices){
@@ -207,16 +207,8 @@ public class ScoringCategories {
     }
 
 
-    public int getScores(Player player, String category, int[] dices) {
+    public int getScores(String category, int[] dices) {
         switch (category) {
-            case "REROLL":
-            dices = rerolling(player, dices);
-            System.out.println("\nThis go for " + player.name + ":     " + Arrays.toString(dices));
-            category = getCategory();
-            category = Goes.validName(category);
-            category = Goes.validCategory(category, player.scoreMap);
-            getScores(player, category, dices);
-                break;
             case "chance":
                 scores = chance(dices);
                 break;
@@ -263,39 +255,10 @@ public class ScoringCategories {
                 scores = fullHouse(dices);
                 break;
             default:
+                System.out.println("Invaild category. Please select valid category below.\n");
                 break;
         }
         return scores;
-    }
-
-    private int[] rerolling(Player player, int[] dices) {
-        int n;
-        Boolean isRerolling = false;
-        Random random = new Random();
-        player.reroll_chances--;
-        if (player.reroll_chances < 0) {
-            System.out.println("You already had three times re-rolling.");
-
-        } else {
-            for (int i = 0; i < dices.length; i++){
-                System.out.println("If you want to reroll '" + dices[i] + "' type 'true'. Otherwise, type 'false'.");
-                while(!go.hasNextBoolean()){
-                    System.out.println("Type 'true' or 'false'.");
-                    go.next(); }
-                isRerolling = go.nextBoolean();
-                n = random.nextInt(6) + 1;
-                dices[i] = (player.reroll_chances <= 3 && isRerolling == true) ? n : dices[i] ;
-            }
-        }
-        category = "fail";
-        setCategory(category);
-        return dices;
-    }
-    private void setCategory(String category){
-        this.category = category;
-    }
-    public String getCategory() {
-        return category;
     }
 }
 
