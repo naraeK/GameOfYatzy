@@ -1,0 +1,133 @@
+tosca_definitions_version: tosca_simple_yaml_1_1
+
+description: service template of an Acme PNF
+
+imports:
+  - etsi_nfv_sol001_pnfd_2_5_1_types.yaml
+
+node_types:
+  Acme.myPnf:
+    derived_from: tosca.nodes.nfv.PNF
+    properties:
+      descriptor_id:
+        type: string
+        constraints: [ valid_values: [ b1bb0ce7-ebca-4fa7-95ed-4840d70a2233 ] ]
+        default: b1bb0ce7-ebca-4fa7-95ed-4840d70a2233
+      function_description:
+        type: string
+        default: Acme PNF
+      provider:
+        type: string
+        constraints: [ valid_values: [ Acme ] ]
+        default: Acme
+      version:
+        type: string
+        constraints: [ valid_values: [ '1.0' ] ]
+        default: '1.0'
+      descriptor_invariant_id:
+        type: string
+        constraints: [ valid_values: [ 1111-2222-ccaa-bbdd ] ]
+        default: 1111-2222-ccaa-bbdd
+      name:
+        type: string
+        constraints: [ valid_values: [ Acme PNF ] ]
+        default: Acme PNF
+    requirements:
+      - virtual_link:
+          capability: tosca.capabilities.nfv.VirtualLinkable
+
+topology_template:
+  substitution_mappings:
+    node_type: Acme.myPnf
+    requirements:
+      virtual_link: [ pnfExtCp_1, external_virtual_link ]
+
+  node_templates:
+    myPnf:
+      type: Acme.myPnf
+      properties:
+        descriptor_id: b1bb0ce7-ebca-4fa7-95ed-4840d70a2233
+        function_description: Acme PNF
+        provider: Acme
+        version: 1.0
+        descriptor_invariant_id: 1111-2222-ccaa-bbdd
+        name: Acme PNF
+    pnfExtCp_1:
+      type: tosca.nodes.nfv.PnfExtCp
+      properties:
+        protocol: [ associated_layer_protocol: ipv4 ]
+        trunk_mode: false
+        layer_protocols: [ ipv4 ]
+        role: leaf
+        description: External connection point to access Acme myPnf
+      requirements:
+      # - external_virtual_link:
+      - dependency: myPnf
+#############################################################################################
+
+tosca_definitions_version: tosca_simple_yaml_1_1
+
+description: the service template of a PNFD
+
+imports:
+  - etsi_nfv_sol001_pnfd_2_5_1_types.yaml
+
+node_types:
+  MyCompany.examplePnf.1_0:
+    derived_from: tosca.nodes.nfv.PNF
+    properties:
+      descriptor_id:
+        type: string
+        constraints: [ valid_values: [ b1bb0ce7-ebca-4fa7-95ed-4840d70a2233 ] ]
+        default: b1bb0ce7-ebca-4fa7-95ed-4840d70a2233
+      function_description:
+        type: string
+        default: an example PNF
+      provider:
+        type: string
+        constraints: [ valid_values: [ MyCompany] ]
+        default: MyCompany
+      version:
+        type: string
+        constraints: [ valid_values: [ '1.0' ] ]
+        default: '1.0'
+      descriptor_invariant_id:
+        type: string
+        constraints: [ valid_values: [ 1111-2222-ccaa-bbdd ] ]
+        default: 1111-2222-ccaa-bbdd
+      name:
+        type: string
+        constraints: [ valid_values: [ExamplePnf] ]
+        default: ExamplePnf
+    requirements:
+      - virtual_link:
+          capability: tosca.capabilities.nfv.VirtualLinkable
+
+topology_template:
+  substitution_mappings:
+    node_type: MyCompany.examplePnf.1_0
+    requirements:
+      virtual_link: [ pnfExtCp_1, external_virtual_link ]
+
+  node_templates:
+    pnf_mainPart:
+      type: MyCompany.examplePnf.1_0
+      properties:
+        descriptor_id: b1bb0ce7-ebca-4fa7-95ed-4840d70a2233
+        function_description: an example PNF
+        provider: Mycompany
+        version: 1.0
+        descriptor_invariant_id: 1111-2222-ccaa-bbdd
+        name: ExamplePnf
+
+    pnfExtCp_1:
+      type: tosca.nodes.nfv.PnfExtCp
+      properties:
+        protocol: [ associated_layer_protocol: ipv4 ]
+        trunk_mode: false
+        layer_protocols: [ ipv4 ]
+        role: leaf
+        description: External connection point to access this pnf
+      requirements:
+        # - external_virtual_link:
+        - dependency: pnf_mainPart
